@@ -1,22 +1,109 @@
-# 📄 AI Document Assistant (RAG)
+# AI Document Assistant
 
-An AI-powered Document Question Answering system built using **LangChain**, **Hugging Face BGE Embeddings**, **Chroma Vector Database**, and **Mistral AI**.
+An AI-powered Document Assistant built with **LangChain**, **ChromaDB**, **Hugging Face Embeddings**, and **Mistral AI**.
 
-The application allows users to chat with PDF documents using Retrieval-Augmented Generation (RAG).
+The application allows users to ingest documents, generate vector embeddings, store them in a persistent vector database, and ask natural language questions using Retrieval-Augmented Generation (RAG).
 
 ---
 
 ## Features
 
-- Upload any PDF document
-- Automatic text extraction
-- Intelligent document chunking
-- Vector embeddings using **BAAI/bge-large-en-v1.5**
-- Chroma Vector Database
-- One Vector Database per PDF
-- Semantic Search
-- Question Answering using **Mistral Small**
-- Modular backend architecture
+- Support for multiple document formats
+  - PDF
+  - DOCX
+  - TXT
+  - Markdown
+  - HTML
+  - CSV
+  - Excel
+  - PowerPoint
+  - JSON
+  - XML
+  - Email (.eml)
+
+- Automatic document chunking
+- Hugging Face sentence embeddings
+- Persistent Chroma vector database
+- Semantic similarity search
+- Retrieval-Augmented Generation (RAG)
+- Modular architecture following separation of concerns
+- CLI-based chat interface
+
+---
+
+## Project Structure
+
+```
+AI-DOCUMENT-ASSISTANT/
+│
+├── config/
+│   └── settings.py
+│
+├── data/
+│   ├── chroma_db/
+│   └── documents/
+│
+├── document_processing/
+│   ├── document_loader.py
+│   ├── document_manager.py
+│   └── document_splitter.py
+│
+├── embeddings/
+│   └── embedding_manager.py
+│
+├── llm/
+│   └── llm_manager.py
+│
+├── prompts/
+│   └── prompt_manager.py
+│
+├── rag/
+│   └── rag_manager.py
+│
+├── retrieval/
+│   └── retriever_manager.py
+│
+├── vector_store/
+│   └── vector_store_manager.py
+│
+├── requirements/
+│
+├── run.py
+├── README.md
+└── .gitignore
+```
+
+---
+
+## Architecture
+
+```
+                Documents
+                    │
+                    ▼
+            Document Loader
+                    │
+                    ▼
+           Document Splitter
+                    │
+                    ▼
+         Embedding Generator
+                    │
+                    ▼
+           Chroma Vector Store
+                    │
+                    ▼
+               Retriever
+                    │
+                    ▼
+             Prompt Template
+                    │
+                    ▼
+               Mistral LLM
+                    │
+                    ▼
+                  Answer
+```
 
 ---
 
@@ -24,108 +111,55 @@ The application allows users to chat with PDF documents using Retrieval-Augmente
 
 - Python
 - LangChain
-- Hugging Face Embeddings
 - ChromaDB
+- Hugging Face Embeddings
 - Mistral AI
 - Sentence Transformers
 
 ---
 
-## Project Structure
-
-```
-AI-Document-Assistant/
-│
-├── config/
-│   └── settings.py
-│
-├── core/
-│   ├── chain.py
-│   ├── embeddings.py
-│   ├── llm.py
-│   ├── prompt.py
-│   ├── retriever.py
-│   └── vector_store.py
-│
-├── document_processing/
-│   ├── loader.py
-│   └── splitter.py
-│
-├── services/
-│   └── rag_service.py
-│
-├── data/
-│   ├── documents/
-│   └── chroma_db/
-│
-├── run.py
-├── requirements.txt
-└── README.md
-```
-
----
-
-## Workflow
-
-```
-PDF
-   │
-   ▼
-PDF Loader
-   │
-   ▼
-Text Splitter
-   │
-   ▼
-BGE Embeddings
-   │
-   ▼
-Chroma Vector Database
-   │
-   ▼
-Retriever
-   │
-   ▼
-Mistral LLM
-   │
-   ▼
-Answer
-```
-
----
-
 ## Installation
 
-Clone the repository
+### Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/AI-Document-Assistant.git
+git clone https://github.com/yourusername/AI-document-assistant.git
+
+cd AI-document-assistant
 ```
 
-Create a virtual environment
+---
+
+### Create a virtual environment
+
+Windows
 
 ```bash
 python -m venv .venv
-```
 
-Activate the virtual environment
-
-### Windows
-
-```bash
 .venv\Scripts\activate
 ```
 
-### Linux / macOS
+Linux / macOS
 
 ```bash
+python3 -m venv .venv
+
 source .venv/bin/activate
 ```
 
-Install dependencies
+---
+
+### Install dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements/requirements.txt
+```
+
+If you want support for additional document loaders:
+
+```bash
+pip install -r requirements/requirements-loaders.txt
 ```
 
 ---
@@ -134,74 +168,102 @@ pip install -r requirements.txt
 
 Create a `.env` file in the project root.
 
+Example:
+
 ```env
-MISTRAL_API_KEY=YOUR_API_KEY
+MISTRAL_API_KEY=your_api_key_here
 ```
 
 ---
 
-## Run the Project
+## Usage
 
-## Add Documents
+### Step 1
 
-Place the PDF documents you want to query inside:
+Place your documents inside
 
-```text
+```
 data/documents/
 ```
+
+---
+
+### Step 2
+
+Ingest the documents using the document manager.
+
+(Your ingestion script or future UI will handle this.)
+
+---
+
+### Step 3
+
+Run the application
 
 ```bash
 python run.py
 ```
 
----
-
-## Example
+Example
 
 ```
-Enter PDF path:
-data/documents/attention-is-all-you-need.pdf
+Ask a question:
 
-You:
-Who are the authors of this paper?
+> What is the marking scheme?
 
-Assistant:
-Ashish Vaswani
-Noam Shazeer
-Niki Parmar
-Jakob Uszkoreit
-Llion Jones
-Aidan N. Gomez
-Łukasz Kaiser
-Illia Polosukhin
+Answer:
+
+The marking scheme is...
 ```
 
 ---
 
-## Current Capabilities
+## Supported Document Types
 
-- Semantic PDF Search
-- One Chroma Database per Document
-- Reuse Existing Vector Databases
-- Modular Architecture
-- Fast Semantic Retrieval
-- Production-style Backend Design
+| Format | Supported |
+|---------|-----------|
+| PDF | ✅ |
+| DOCX | ✅ |
+| TXT | ✅ |
+| Markdown | ✅ |
+| HTML | ✅ |
+| CSV | ✅ |
+| Excel | ✅ |
+| PowerPoint | ✅ |
+| JSON | ✅ |
+| XML | ✅ |
+| Email (.eml) | ✅ |
 
 ---
 
-## Future Improvements
+## Current Features
 
-- Streamlit Interface
-- Multi-document Chat
+- Document ingestion
+- Automatic text chunking
+- Hugging Face embeddings
+- Persistent Chroma database
+- Semantic retrieval
+- RAG pipeline
+- Interactive CLI
+
+---
+
+## Planned Features
+
+- Document metadata support
+- Source citations
+- Page references
+- Multi-document filtering
+- Delete/update individual documents
+- Streamlit web interface
+- Conversation memory
 - Hybrid Search (BM25 + Vector Search)
-- Cross Encoder Reranker
-- Source Citations
-- Chat History
-- Metadata Filtering
-- REST API
+- Reranking
+- Docker support
+- FastAPI REST API
 
 ---
 
 ## License
 
-This project is licensed under the MIT License.
+This project is for educational and portfolio purposes.

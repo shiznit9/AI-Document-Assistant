@@ -1,24 +1,13 @@
-from services.rag_service import RAGService
+from rag.rag_manager import RAGManager
 
-def main():
+rag = RAGManager()
 
-    rag = RAGService()
+while True:
+    question = input("\nAsk a question (or type 'exit'): ")
 
-    pdf_path = input("Enter PDF path: ")
+    if question.lower() == "exit":
+        break
 
-    rag.process_document(pdf_path)
-
-    while True:
-
-        question = input("\nYou: ")
-
-        if question.lower() in ["exit", "quit"]:
-            break
-
-        answer = rag.ask_question(question)
-
-        print(f"\nAssistant: {answer}")
-
-
-if __name__ == "__main__":
-    main()
+    answer = rag.ask(question)
+    print("\nAnswer:")
+    print(answer)

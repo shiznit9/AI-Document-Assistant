@@ -1,59 +1,50 @@
-# ===========================
-# Python
-# ===========================
+# Virtual Environment
+.venv/
+
+# Python Cache
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Virtual Environment
-.venv/
-venv/
-env/
-
 # Environment Variables
 .env
 
-# ===========================
 # Chroma Vector Database
-# ===========================
-data/chroma_db/
+data/chroma_db/*
+!data/chroma_db/.gitkeep
 
-# ===========================
+# Uploaded Documents (optional)
+# Uncomment if you don't want sample documents in GitHub
+# data/documents/*
+
 # VS Code
-# ===========================
 .vscode/
 
-# ===========================
-# Jupyter
-# ===========================
-.ipynb_checkpoints/
+# PyCharm
+.idea/
 
-# ===========================
-# Logs
-# ===========================
-*.log
-
-# ===========================
 # OS Files
-# ===========================
 .DS_Store
 Thumbs.db
 
-# ===========================
-# Python Build Files
-# ===========================
+# Logs
+*.log
+
+# Python Build
 build/
 dist/
 *.egg-info/
 
-# ===========================
-# Cache
-# ===========================
-.cache/
+# Jupyter
+.ipynb_checkpoints/
+
+# Coverage
+.coverage
+htmlcov/
 .pytest_cache/
+
+# Mypy
 .mypy_cache/
 
-# ===========================
-# Hugging Face Cache (Optional)
-# ===========================
-.huggingface/
+# Ruff
+.ruff_cache/

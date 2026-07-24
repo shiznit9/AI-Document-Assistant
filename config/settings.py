@@ -18,6 +18,7 @@ EMBEDDING_MODEL = "BAAI/bge-large-en-v1.5"
 
 # LLM
 LLM_MODEL = "mistral-small-2506"
+LLM_TEMPERATURE = 0.2
 
 # Retriever
 RETRIEVER_SEARCH_TYPE = "similarity"
