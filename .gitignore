@@ -1,50 +1,104 @@
-# Virtual Environment
-.venv/
+# ==========================================
+# Python
+# ==========================================
 
-# Python Cache
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Environment Variables
-.env
+# Compiled extensions
+*.so
 
-# Chroma Vector Database
-data/chroma_db/*
-!data/chroma_db/.gitkeep
-
-# Uploaded Documents (optional)
-# Uncomment if you don't want sample documents in GitHub
-# data/documents/*
-
-# VS Code
-.vscode/
-
-# PyCharm
-.idea/
-
-# OS Files
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
-# Python Build
+# Distribution / packaging
+.Python
 build/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
 *.egg-info/
+.installed.cfg
+*.egg
 
+# ==========================================
+# Virtual Environment
+# ==========================================
+
+.venv/
+venv/
+env/
+ENV/
+
+# ==========================================
+# Environment Variables
+# ==========================================
+
+.env
+.env.*
+
+# ==========================================
+# IDEs
+# ==========================================
+
+.vscode/
+.idea/
+
+# ==========================================
+# Logs
+# ==========================================
+
+*.log
+
+# ==========================================
 # Jupyter
+# ==========================================
+
 .ipynb_checkpoints/
 
-# Coverage
+# ==========================================
+# Testing
+# ==========================================
+
+.pytest_cache/
 .coverage
 htmlcov/
-.pytest_cache/
-
-# Mypy
+.tox/
 .mypy_cache/
-
-# Ruff
 .ruff_cache/
+
+# ==========================================
+# OS Files
+# ==========================================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# Chroma Vector Database
+# ==========================================
+
+data/chroma_db/
+
+# ==========================================
+# Uploaded Documents
+# ==========================================
+
+# Ignore all uploaded documents
+data/documents/*
+
+# Keep the folder in Git
+!data/documents/.gitkeep
+
+# ==========================================
+# Misc
+# ==========================================
+
+*.sqlite3
+*.db

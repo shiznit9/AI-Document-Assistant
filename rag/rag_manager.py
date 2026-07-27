@@ -27,12 +27,24 @@ class RAGManager:
             combine_docs_chain=self.document_chain,
         )
 
-    def ask(self, question: str) -> str:
+    def ask(self, question: str) -> dict:
+        """
+        Answers a user's question using the RAG pipeline.
+
+        Args:
+            question: User's question.
+
+        Returns:
+            Dictionary containing the answer and retrieved source documents.
+        """
 
         response = self.rag_chain.invoke(
             {
-                "input": question
+                "input": question,
             }
         )
 
-        return response["answer"]
+        return {
+            "answer": response["answer"],
+            "sources": response["context"],
+        }

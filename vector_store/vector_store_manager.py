@@ -35,3 +35,29 @@ class VectorStoreManager:
         """
 
         vector_store.add_documents(documents)
+
+    @staticmethod
+    def document_exists(
+        vector_store: Chroma,
+        file_hash: str,
+    ) -> bool:
+        """
+        Checks whether a document with the given file hash already
+        exists in the vector store.
+
+        Args:
+            vector_store: Chroma vector store instance.
+            file_hash: SHA-256 hash of the document.
+
+        Returns:
+            True if the document already exists, otherwise False.
+        """
+
+        results = vector_store.get(
+            where={
+                "file_hash": file_hash,
+            },
+            limit=1,
+        )
+
+        return len(results["ids"]) > 0
