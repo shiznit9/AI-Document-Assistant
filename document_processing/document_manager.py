@@ -37,9 +37,6 @@ class DocumentManager:
             print(f"Document '{file_path.name}' already exists. Skipping ingestion.")
             return
 
-        for document in documents:
-            print(document.metadata)
-
         chunks = DocumentSplitter.split(documents)
 
         VectorStoreManager.add_documents(

@@ -8,14 +8,11 @@ Designed with a clean, modular architecture, each stage of the RAG pipeline is s
 
 ## ✨ Features
 
-- 📄 Supports multiple document formats
-  - PDF
-  - DOCX
-  - TXT
-  - Markdown
+- 📄 Supports 12 document formats
+  - PDF, DOCX, TXT, Markdown, HTML, CSV, XLSX, XLS, PPTX, JSON, XML, EML
 
 - 🧩 Modular architecture with dedicated managers for:
-  - Document Processing
+  - Document Processing (loading, splitting, metadata)
   - Embeddings
   - Vector Store
   - Retrieval
@@ -25,13 +22,13 @@ Designed with a clean, modular architecture, each stage of the RAG pipeline is s
 
 - 🔍 Semantic search using vector embeddings
 
-- 🧠 Hugging Face embedding models
+- 🧠 Hugging Face embedding models (BAAI/bge-large-en-v1.5)
 
 - 💾 Persistent Chroma vector database
 
 - 📝 Automatic document metadata extraction
 
-- 🔐 SHA-256 duplicate document detection
+- 🔐 SHA-256 duplicate document detection (skips re-ingesting a file already in the store)
 
 - 💬 Interactive command-line interface
 
@@ -103,7 +100,9 @@ AI-Document-Assistant
 │
 ├── ingest.py
 ├── run.py
-├── requirements.txt
+├── requirements/
+│   ├── base.txt
+│   └── loaders.txt
 └── README.md
 ```
 
@@ -114,14 +113,15 @@ AI-Document-Assistant
 The application follows a standard Retrieval-Augmented Generation (RAG) workflow:
 
 1. Documents are loaded from the data directory.
-2. Metadata is extracted for every document.
-3. Each document is split into smaller chunks.
-4. Embeddings are generated for every chunk.
-5. Embeddings are stored in a persistent Chroma vector database.
-6. User queries are converted into embeddings.
-7. The retriever performs semantic similarity search.
-8. Retrieved context is combined with the prompt.
-9. The language model generates an answer using only the retrieved context.
+2. Metadata (document ID, SHA-256 file hash, file type) is extracted for every document.
+3. The document manager checks the vector store for a matching file hash and skips ingestion if it's a duplicate.
+4. Each new document is split into smaller chunks.
+5. Embeddings are generated for every chunk.
+6. Embeddings are stored in a persistent Chroma vector database.
+7. User queries are converted into embeddings.
+8. The retriever performs semantic similarity search.
+9. Retrieved context is combined with the prompt.
+10. The language model generates an answer using only the retrieved context.
 
 ---
 
@@ -130,7 +130,7 @@ The application follows a standard Retrieval-Augmented Generation (RAG) workflow
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/AI-Document-Assistant.git
+git clone https://github.com/shiznit9/AI-Document-Assistant.git
 
 cd AI-Document-Assistant
 ```
@@ -158,20 +158,20 @@ source .venv/bin/activate
 Install dependencies:
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements/base.txt -r requirements/loaders.txt
 ```
 
 ---
 
 # ⚙️ Configuration
 
-Update your API key inside the environment file.
+Update your API key inside the environment file (`.env`, already gitignored):
 
 ```env
-GOOGLE_API_KEY=your_api_key
+MISTRAL_API_KEY=your_api_key
 ```
 
-Modify application settings in:
+Modify application settings (embedding model, LLM model, chunk size, retriever parameters) in:
 
 ```text
 config/settings.py
@@ -193,6 +193,8 @@ Then build the vector database:
 python ingest.py
 ```
 
+Documents already present in the vector store (matched by SHA-256 hash) are automatically skipped.
+
 ---
 
 # 💬 Run the Assistant
@@ -204,15 +206,10 @@ python run.py
 Example:
 
 ```text
-Ask a question:
-What is Retrieval-Augmented Generation?
+Ask a question (or type 'exit'): What is Retrieval-Augmented Generation?
 
 Answer:
-Retrieval-Augmented Generation (RAG) combines semantic retrieval with a language model by first retrieving relevant document chunks before generating a response.
-
-Sources:
-• ai_notes.pdf
-• rag_overview.pdf
+{'answer': 'Retrieval-Augmented Generation (RAG) combines semantic retrieval with a language model by first retrieving relevant document chunks before generating a response.', 'sources': [...]}
 ```
 
 ---
@@ -220,10 +217,9 @@ Sources:
 # 🛠️ Tech Stack
 
 - Python
-- LangChain
-- LangChain Classic
-- Google Gemini
-- Hugging Face Embeddings
+- LangChain / LangChain Classic
+- Mistral AI (`mistral-small-2506` via `langchain-mistralai`)
+- Hugging Face Embeddings (`BAAI/bge-large-en-v1.5`)
 - ChromaDB
 - Sentence Transformers
 
@@ -241,6 +237,7 @@ Sources:
 - Web Interface (Streamlit / React)
 - Re-ranking Models
 - Multi-LLM Support
+- Cleaner formatted CLI output (structured answer + bulleted sources)
 
 ---
 
